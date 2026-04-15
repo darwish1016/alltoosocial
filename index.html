@@ -88,56 +88,14 @@
       to   { opacity:1; transform:translateX(0); }
     }
     @keyframes fadeIn  { from { opacity:0; } to { opacity:1; } }
-    @keyframes rotateSlow { from{transform:rotate(0)} to{transform:rotate(360deg)} }
-    @keyframes float {
-      0%,100%{ transform:translateY(0px) rotate(0deg); }
-      33%{ transform:translateY(-8px) rotate(1deg); }
-      66%{ transform:translateY(4px) rotate(-1deg); }
-    }
-    @keyframes ripple {
-      to { transform: scale(4); opacity: 0; }
-    }
+    @keyframes marquee { from { transform:translateX(0); } to { transform:translateX(-50%); } }
 
-    /* ============================================================
-       SCROLL REVEAL
-    ============================================================ */
     .reveal {
       opacity: 0;
       transform: translateY(40px);
       transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
     }
     .reveal.visible { opacity:1; transform:translateY(0); }
-
-    .reveal-left {
-      opacity: 0;
-      transform: translateX(-50px);
-      transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
-    }
-    .reveal-left.visible { opacity:1; transform:translateX(0); }
-
-    .reveal-right {
-      opacity: 0;
-      transform: translateX(50px);
-      transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
-    }
-    .reveal-right.visible { opacity:1; transform:translateX(0); }
-
-    /* Stagger delays */
-    .d1 { transition-delay: 0.1s; }
-    .d2 { transition-delay: 0.2s; }
-    .d3 { transition-delay: 0.3s; }
-    .d4 { transition-delay: 0.4s; }
-    .d5 { transition-delay: 0.5s; }
-
-    /* ============================================================
-       NOISE OVERLAY
-    ============================================================ */
-    body::before {
-      content: '';
-      position: fixed; inset: 0; z-index: 1;
-      pointer-events: none;
-      opacity: 0.03;
-    }
 
     /* ============================================================
        NAVBAR
@@ -160,8 +118,9 @@
     .nav-logo {
       position: relative; z-index: 10;
     }
-    .nav-logo img { height: clamp(3.4rem,7vw,4.8rem); width: auto; }
-    .nav-links { display:none; align-items:center; gap:clamp(1.5rem,3vw,2.5rem); }
+    .nav-logo img { height: 2.6rem; width: auto; }
+
+    .nav-links { display:none; align-items:center; gap:2.5rem; }
     .nav-links a {
       font-family: var(--ui);
       font-size: clamp(0.78rem, 1.9vw, 0.95rem);
@@ -308,25 +267,21 @@
     @keyframes heroZoom { to { transform: scale(1); } }
 
     .hero-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(
-        to right,
-        rgba(13,13,13,0.95) 0%,
-        rgba(13,13,13,0.82) 40%,
-        rgba(13,13,13,0.5) 65%,
-        rgba(13,13,13,0.15) 100%
-      );
+      position:absolute; inset:0;
+      background: linear-gradient(to right, var(--bg) 28%, rgba(13,13,13,.76) 58%, transparent);
     }
-    /* Red vignette bottom */
-    .hero-overlay::after {
-      content: '';
-      position: absolute; bottom: 0; left: 0; right: 0; height: 40%;
-      background: linear-gradient(to top, rgba(13,13,13,0.9), transparent);
+    .hero-content { position:relative; padding-top:5rem; }
+    .hero-inner   { max-width:44rem; }
+
+    .hero-lbl {
+      display:block;
+      font-family: var(--ui);
+      font-size:.65rem;
+      font-weight: 600;
+      letter-spacing:.38em; color:var(--primary); text-transform:uppercase;
+      margin-bottom:1.3rem;
+      animation: fadeIn 1s ease-out both;
     }
-
-    .hero-content { position: relative; z-index: 2; width: 100%; padding-top: clamp(7rem, 14vw, 9rem); }
-    .hero-inner { max-width: clamp(28rem, 55vw, 44rem); }
-
     .hero-title {
       font-size: clamp(2.4rem, 7vw, 5rem);
       line-height: 1; margin-bottom: clamp(1.2rem, 3vw, 1.8rem);
@@ -354,48 +309,44 @@
       margin-bottom: clamp(1.0rem, 4vw, 2.2rem);
       animation: fadeIn 1s var(--ease-out) 0.5s both;
     }
+    .hero-btns { display:flex; flex-wrap:wrap; gap:1rem; animation: fadeIn 1s ease-out .5s both; padding-bottom:40px; }
 
-    .hero-btns {
-      display: flex; flex-wrap: wrap; gap: 0.85rem;
-      animation: fadeIn 1s var(--ease-out) 0.7s both;
-      padding-bottom: clamp(1.5rem, 5vw, 3rem);
-    }
-
-    /* Magnetic buttons */
-    .btn-p, .btn-o {
-      font-family: var(--ui);
-      font-size: clamp(0.65rem, 1.5vw, 0.72rem);
-      font-weight: 700;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      padding: clamp(0.85rem, 2vw, 1rem) clamp(1.5rem, 4vw, 2.25rem);
-      position: relative; overflow: hidden;
-      transition: transform 0.3s var(--ease-out), background 0.3s, color 0.3s;
-      display: inline-block;
-    }
     .btn-p {
-      background: var(--primary); color: var(--prim-fg);
+      font-family: var(--ui);
+      font-size:.72rem;
+      font-weight: 700;
+      letter-spacing:.1em;
+      text-transform: uppercase;
+      background:var(--primary); color:var(--prim-fg);
+      padding:1rem 2.25rem; transition:background .3s;
     }
-    .btn-p::before {
-      content: ''; position: absolute; inset: 0;
-      background: var(--prim-d);
-      transform: translateY(100%);
-      transition: transform 0.4s var(--ease-out);
-    }
-    .btn-p:hover::before { transform: translateY(0); }
-    .btn-p span { position: relative; z-index: 1; }
+    .btn-p:hover { background: var(--prim-d); }
     .btn-o {
-      border: 1px solid rgba(247,247,247,0.3); color: var(--fg);
+      font-family: var(--ui);
+      font-size:.72rem;
+      font-weight: 700;
+      letter-spacing:.1em;
+      text-transform: uppercase;
+      border:1px solid var(--fg); color:var(--fg);
+      padding:1rem 2.25rem; transition:background .3s,color .3s;
     }
-    .btn-o::before {
-      content: ''; position: absolute; inset: 0;
-      background: var(--fg);
-      transform: translateY(100%);
-      transition: transform 0.4s var(--ease-out);
+    .btn-o:hover { background:var(--fg); color:var(--bg); }
+
+    /* Ticker */
+    .ticker {
+      position:absolute; bottom:0; left:0; right:0;
+      border-top:1px solid var(--border);
+      background:rgba(13,13,13,.84); backdrop-filter:blur(6px);
+      padding:.7rem 0; overflow:hidden;
     }
-    .btn-o:hover::before { transform: translateY(0); }
-    .btn-o:hover { color: var(--bg); }
-    .btn-o span { position: relative; z-index: 1; }
+    .ticker-track { display:flex; white-space:nowrap; animation:marquee 26s linear infinite; }
+    .ticker-track span {
+      font-family: var(--ui);
+      font-size:.62rem;
+      font-weight: 600;
+      letter-spacing:.3em;
+      color:var(--muted); margin:0 2rem;
+    }
 
     /* ============================================================
        STATS
@@ -419,7 +370,7 @@
       gap: clamp(2rem,5vw,2.5rem) clamp(1rem,3vw,1.5rem);
       text-align: center;
     }
-    @media(min-width:640px) { .stats-grid { grid-template-columns: repeat(4,1fr); } }
+    @media(min-width:768px){ .stats-grid{ grid-template-columns:repeat(4,1fr); } }
     .stat-num {
       font-family: var(--heading);
       font-size: clamp(2rem,5vw,3rem);
@@ -450,11 +401,15 @@
     @media(min-width:768px){
       .svc-header{ flex-direction:row; align-items:flex-end; justify-content:space-between; }
     }
-    .svc-grid {
-      display: grid; grid-template-columns: 1fr;
-      gap: 0;
+    .svc-desc {
+      font-family: var(--body);
+      font-size:.9rem;
+      line-height:1.82;
+      font-weight: 300;
+      color:var(--muted); max-width:24rem;
     }
-    @media(min-width:640px) { .svc-grid { grid-template-columns: repeat(2,1fr); } }
+    .svc-grid { display:grid; grid-template-columns:1fr; }
+    @media(min-width:768px){ .svc-grid{ grid-template-columns:repeat(2,1fr); } }
 
     .svc-card {
       border: 1px solid var(--border); padding: clamp(1.5rem,3vw,2rem) clamp(1.5rem,3vw,2rem) clamp(1.75rem,4vw,2.25rem);
@@ -504,131 +459,39 @@
     /* ============================================================
        PROCESS
     ============================================================ */
-    #process { position: relative; overflow: hidden; }
-    .proc-timeline {
-      position: relative;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1rem;
-      padding-top: clamp(0.5rem, 2vw, 1.2rem);
+    .proc-step {
+      display:flex; flex-direction:column; gap:.75rem;
+      padding:1.6rem 0; border-bottom:1px solid var(--border); transition:border-color .5s;
     }
-    .proc-line {
-      display: none;
-      position: absolute;
-      left: 50%;
-      top: 0;
-      bottom: 0;
-      width: 1px;
-      transform: translateX(-50%);
-      background: linear-gradient(to bottom, rgba(191,57,47,0.6), rgba(247,247,247,0.18));
-      pointer-events: none;
-    }
-    .proc-item {
-      position: relative;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 0.75rem;
-    }
-    .proc-node {
-      display: none;
-      width: 14px;
-      height: 14px;
-      border-radius: 999px;
-      border: 2px solid var(--primary);
-      background: var(--bg);
-      box-shadow: 0 0 0 4px rgba(191,57,47,0.15);
-      z-index: 2;
-    }
-    .proc-card {
-      border: 1px solid var(--border);
-      background: linear-gradient(160deg, rgba(20,20,20,0.86), rgba(13,13,13,0.95));
-      padding: clamp(1rem, 2.5vw, 1.25rem);
-      transition: border-color 0.35s, transform 0.35s var(--ease-out), background 0.35s;
-      position: relative;
-      overflow: hidden;
-    }
-    .proc-card::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(to right, rgba(191,57,47,0.9), transparent 72%);
-    }
-    .proc-card:hover {
-      transform: translateY(-3px);
-      border-color: rgba(191,57,47,0.45);
-      background: linear-gradient(160deg, rgba(24,24,24,0.92), rgba(13,13,13,0.98));
-    }
-    .proc-stage {
-      display: inline-block;
+    .proc-step:hover { border-color:var(--primary); }
+    @media(min-width:768px){ .proc-step{ flex-direction:row; align-items:center; gap:2.5rem; } }
+
+    .proc-n {
       font-family: var(--ui);
-      font-size: .58rem;
-      font-weight: 700;
-      letter-spacing: .24em;
-      text-transform: uppercase;
-      color: var(--prim-fg);
-      background: linear-gradient(to right, var(--prim-d), var(--primary));
-      padding: 0.38rem 0.7rem;
-      margin-bottom: 0.8rem;
+      font-size:.6rem;
+      font-weight: 600;
+      letter-spacing:.28em;
+      color:rgba(247,247,247,.15); min-width:4rem; transition:color .5s;
     }
+    .proc-step:hover .proc-n { color:var(--primary); }
     .proc-title {
       font-family: var(--heading);
-      font-size: clamp(1.25rem, 2vw, 1.6rem);
-      letter-spacing: .07em;
-      color: var(--fg);
-      margin-bottom: 0.55rem;
-      line-height: 1.1;
+      font-size:1.05rem; letter-spacing:0.1em; color:var(--fg); min-width:15rem;
     }
     .proc-desc {
       font-family: var(--body);
-      font-size: clamp(0.82rem,2vw,.9rem);
-      line-height: 1.8;
+      font-size:.875rem;
+      line-height:1.82;
       font-weight: 300;
-      color: var(--muted);
-      max-width: 30ch;
+      color:var(--muted); flex:1;
     }
-
-    @media(min-width:900px){
-      .proc-timeline {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        column-gap: clamp(2rem, 5vw, 4rem);
-        row-gap: clamp(1.5rem, 4vw, 2.5rem);
-      }
-      .proc-line,
-      .proc-node {
-        display: block;
-      }
-      .proc-item {
-        grid-column: span 2;
-        grid-template-columns: 1fr auto 1fr;
-        align-items: center;
-      }
-      .proc-item .proc-card {
-        width: min(100%, 24rem);
-      }
-      .proc-item:nth-child(odd) .proc-card {
-        grid-column: 1;
-        justify-self: end;
-      }
-      .proc-item:nth-child(odd) .proc-node {
-        grid-column: 2;
-      }
-      .proc-item:nth-child(odd) .proc-spacer {
-        grid-column: 3;
-      }
-      .proc-item:nth-child(even) .proc-spacer {
-        grid-column: 1;
-      }
-      .proc-item:nth-child(even) .proc-node {
-        grid-column: 2;
-      }
-      .proc-item:nth-child(even) .proc-card {
-        grid-column: 3;
-        justify-self: start;
-      }
+    .proc-dot {
+      display:none; width:18px; height:18px;
+      border:1px solid var(--border); flex-shrink:0;
+      transition:border-color .5s,background .5s;
     }
+    @media(min-width:768px){ .proc-dot{ display:block; } }
+    .proc-step:hover .proc-dot { border-color:var(--primary); background:var(--primary); }
 
     /* ============================================================
        WORK / PORTFOLIO
@@ -663,13 +526,13 @@
 
     .wcard-ov {
       position:absolute; inset:0;
-      background:rgba(13,13,13,0.58);
-      display:flex; align-items:flex-end; padding: clamp(0.75rem,2vw,1.25rem);
+      background:rgba(13,13,13,0);
+      display:flex; align-items:flex-end; padding:1.25rem;
       transition:background .5s;
     }
-    .wcard:hover .wcard-ov { background:rgba(13,13,13,.7); }
-    .wcard-info { transform:translateY(0); opacity:1; transition:transform .5s var(--ease-out),opacity .5s; }
-    .wcard:hover .wcard-info { transform:translateY(-2px); }
+    .wcard:hover .wcard-ov { background:rgba(13,13,13,.72); }
+    .wcard-info { transform:translateY(12px); opacity:0; transition:transform .45s,opacity .45s; }
+    .wcard:hover .wcard-info { transform:translateY(0); opacity:1; }
     .wcat {
       font-family: var(--ui); font-size:.6rem; font-weight:600;
       letter-spacing:.3em; color:var(--primary); text-transform:uppercase; margin-bottom:.35rem;
@@ -677,12 +540,7 @@
     .wtitle {
       font-family: var(--heading); font-size: clamp(1.3rem,2vw,1.05rem); color: var(--fg);
     }
-
-    /* Touch devices - always show overlay */
-    @media (hover: none) {
-      .wcard-ov { background: rgba(13,13,13,0.6); }
-      .wcard-info { transform: translateY(0); opacity: 1; }
-    }
+    @media(min-width:768px){ .wtitle{ font-size:1.05rem; } }
 
     /* ============================================================
        TESTIMONIALS
@@ -696,25 +554,8 @@
       pointer-events: none; line-height: 1;
     }
     .tquote {
-      font-family: var(--heading); font-size: clamp(3.5rem,8vw,5rem);
-      line-height: 1; color: rgba(191,57,47,.25); display: block; margin-bottom: -.5rem;
-    }
-    .tpanel {
-      max-width: 50rem;
-      border: 1px solid var(--border);
-      background: linear-gradient(160deg, rgba(20,20,20,0.92), rgba(13,13,13,0.98));
-      padding: clamp(1.1rem, 3vw, 1.8rem);
-      position: relative;
-      overflow: hidden;
-    }
-    .tpanel::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 0;
-      height: 1px;
-      background: linear-gradient(to right, rgba(191,57,47,0.9), transparent 72%);
+      font-family:var(--heading); font-size:5rem; line-height:1;
+      color:rgba(191,57,47,.22); display:block; margin-bottom:-.6rem;
     }
     .ttext {
       font-family: var(--body);
@@ -723,31 +564,12 @@
       min-height: clamp(5rem,12vw,8rem); margin-bottom: 2rem;
       transition: opacity .4s, transform .4s var(--ease-out);
     }
-    .ttext.fade { opacity:0; transform: translateY(10px); }
-    .tperson {
-      display: flex;
-      align-items: center;
-      gap: 0.9rem;
-      margin-bottom: 1.4rem;
-    }
-    .timg {
-      width: clamp(3rem, 7vw, 3.8rem);
-      aspect-ratio: 1;
-      border-radius: 999px;
-      object-fit: cover;
-      border: 2px solid rgba(191,57,47,0.45);
-      box-shadow: 0 0 0 5px rgba(191,57,47,0.12);
-      flex-shrink: 0;
-      transition: opacity .35s, transform .35s var(--ease-out);
-    }
-    .timg.fade {
-      opacity: 0;
-      transform: scale(0.92);
-    }
-    .tname { font-family: var(--heading); font-size: clamp(1.3rem,2vw,1.05rem); color: var(--fg); margin-bottom:.35rem; }
+    .tname { font-family:var(--heading); font-size:1.05rem; color:var(--fg); margin-bottom:.35rem; }
     .trole {
-      font-family: var(--ui); font-size:.6rem; font-weight:600;
-      letter-spacing:.22em; color:var(--primary); text-transform:uppercase;
+      font-family: var(--ui);
+      font-size:.6rem;
+      font-weight: 600;
+      letter-spacing:.22em; color:var(--primary); text-transform:uppercase; margin-bottom:2rem;
     }
     .tdots { display:flex; gap:.5rem; align-items: center; }
     .tdot {
@@ -761,148 +583,70 @@
        ABOUT
     ============================================================ */
     .about-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: clamp(1.6rem,4vw,2.6rem);
-      align-items: center;
+      display:grid; grid-template-columns:1fr;
+      gap:3.5rem; align-items:start;
     }
-    @media(min-width:1024px){ .about-grid{ grid-template-columns: minmax(18rem, 0.95fr) minmax(20rem, 1.05fr); } }
-    .about-media {
-      position: relative;
-      overflow: hidden;
-      border: 1px solid rgba(247,247,247,0.13);
-      background: linear-gradient(165deg, rgba(20,20,20,0.92), rgba(13,13,13,0.95));
-    }
-    .about-media::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(13,13,13,0.72) 0%, transparent 45%);
-      z-index: 2;
-      pointer-events: none;
-    }
-    .about-media::after {
-      content: '';
-      position: absolute;
-      left: 1.1rem;
-      right: 1.1rem;
-      bottom: 1.1rem;
-      height: 1px;
-      background: linear-gradient(to right, transparent, rgba(191,57,47,0.75), transparent);
-      z-index: 3;
-      pointer-events: none;
-    }
-    .about-media img {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      aspect-ratio: 5 / 6;
-      object-fit: cover;
-      filter: contrast(1.06) saturate(0.95);
-      transition: transform 0.6s var(--ease-out), filter 0.6s var(--ease-out);
-    }
-    .about-media:hover img {
-      transform: scale(1.035);
-      filter: contrast(1.1) saturate(1.02);
-    }
-    .about-content {
-      position: relative;
-      padding: clamp(1.25rem, 3vw, 2rem);
-      background: transparent;
-      border: 0;
-      box-shadow: none;
-    }
-    .about-content::before {
-      content: none;
-    }
-    .about-div { width:3rem; height:2px; background:var(--primary); margin: clamp(1rem,3vw,1.5rem) 0; }
+    @media(min-width:1024px){ .about-grid{ grid-template-columns:repeat(2,1fr); } }
+    .about-div { width:3rem; height:2px; background:var(--primary); margin:1.5rem 0; }
     .about-body {
-      font-family: var(--body); font-size: clamp(0.85rem,2vw,.9rem);
-      line-height: 1.85; font-weight: 300; color: rgba(247,247,247,0.78);
+      font-family: var(--body);
+      font-size:.9rem;
+      line-height:1.85;
+      font-weight: 300;
+      color:var(--muted);
     }
     .mission-block {
       margin-top: 1.75rem;
-      padding: 0.25rem 0;
-      border: 0;
-      background: transparent;
-      position: relative;
-      overflow: visible;
-    }
-    .mission-block::before {
-      content: none;
+      padding: 1.25rem 1.5rem;
+      border-left: 2px solid var(--primary);
+      background: rgba(191,57,47,.05);
     }
     .mission-lbl {
       font-family: var(--ui);
       font-size: .58rem;
-      font-weight: 700;
-      letter-spacing: .27em;
+      font-weight: 600;
+      letter-spacing: .32em;
       color: var(--primary);
       text-transform: uppercase;
-      margin-bottom: .48rem;
+      margin-bottom: .6rem;
     }
-    .mission-block p:not(.mission-lbl) {
-      font-family: var(--body); font-size:.875rem;
-      line-height:1.82; font-weight:400; color:rgba(247,247,247,0.9); position: relative;
+    .mission-block p {
+      font-family: var(--body);
+      font-size: .875rem;
+      line-height: 1.82;
+      font-weight: 300;
+      color: var(--fg);
     }
 
-    .team {
-      position: relative;
-      border: 0;
-      background: transparent;
-      padding: 1rem 0 1rem 1.15rem;
-      overflow: visible;
-      transition: transform 0.35s var(--ease-out);
-    }
-    .mission-block + .team { margin-top: 1rem; }
-    .team + .team { margin-top: 0.35rem; }
-    .team::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(to right, rgba(247,247,247,0.2), transparent 75%);
-    }
-    .team::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 1.2rem;
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: var(--primary);
-      box-shadow: 0 0 0 3px rgba(191,57,47,0.14);
-    }
-    .team:hover {
-      transform: translateX(6px);
-    }
+    .team { border-left:2px solid var(--primary); padding-left:1.75rem; margin-bottom:2rem; }
     .tname2 {
       font-family: var(--heading);
-      font-size: clamp(1.2rem, 2vw, 1.35rem);
-      font-weight: 400;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      color: var(--fg);
-      line-height: 1.15;
+      font-size:1.2rem; color:var(--fg); margin-bottom:.4rem;
     }
     .trole2 {
-      font-family:var(--ui);
-      font-size: .58rem;
-      font-weight: 700;
-      letter-spacing: .24em;
-      color: var(--primary);
-      text-transform: uppercase;
-      margin: 0.3rem 0 0.72rem;
+      font-family: var(--ui);
+      font-size:.6rem;
+      font-weight: 600;
+      letter-spacing:.22em; color:var(--primary); text-transform:uppercase; margin-bottom:.75rem;
     }
     .tbio {
-      font-family:var(--body);
+      font-family: var(--body);
       font-size:.875rem;
       line-height:1.82;
-      font-weight:300;
-      color:rgba(247,247,247,0.7);
+      font-weight: 300;
+      color:var(--muted);
     }
+
+    .vals { display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem; }
+    .val {
+      border:1px solid var(--border); padding:.65rem .25rem; text-align:center;
+      font-family: var(--ui);
+      font-size:.52rem;
+      font-weight: 600;
+      letter-spacing:.12em; color:var(--muted); text-transform:uppercase; line-height:1.55;
+      transition: background .3s, color .3s, border-color .3s;
+    }
+    .val:hover { background: var(--primary); color: var(--fg); border-color: var(--primary); }
 
     /* ============================================================
        FAQ
@@ -1005,57 +749,13 @@
     /* ============================================================
        FOOTER
     ============================================================ */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: clamp(2.2rem,6vw,3.2rem) 0;
-      background:
-        linear-gradient(to top, rgba(20,20,20,0.95), rgba(13,13,13,0.9)),
-        radial-gradient(ellipse at 15% 90%, rgba(191,57,47,0.09), transparent 55%);
-      position: relative;
-      overflow: hidden;
-    }
-    footer::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 0;
-      height: 1px;
-      background: linear-gradient(to right, transparent, rgba(191,57,47,0.6), transparent);
-      pointer-events: none;
-    }
+    footer { border-top:1px solid var(--border); padding:3.5rem 0; }
     .foot-in {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1.2rem;
-      align-items: center;
-      text-align: center;
+      display:flex; flex-direction:column;
+      align-items:center; gap:1.75rem; text-align:center;
     }
-    @media(min-width:900px){
-      .foot-in {
-        grid-template-columns: auto 1fr auto;
-        text-align: left;
-        gap: 1.5rem;
-      }
-    }
-    .foot-logo {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-    @media(min-width:900px){
-      .foot-logo { justify-content: flex-start; }
-    }
-    .foot-logo img {
-      height: clamp(2rem,5vw,2.65rem);
-      width: auto;
-      opacity: 0.96;
-      transition: opacity 0.3s, transform 0.3s var(--ease-out);
-    }
-    .foot-logo:hover img {
-      opacity: 1;
-      transform: translateY(-1px);
-    }
+    @media(min-width:768px){ .foot-in{ flex-direction:row; justify-content:space-between; text-align:left; } }
+    .foot-logo img { height:2.2rem; width:auto; }
     .foot-copy {
       font-family:var(--ui); font-size:clamp(0.55rem,1.5vw,.6rem); font-weight:400;
       letter-spacing:.15em; color:var(--muted);
@@ -1064,124 +764,15 @@
     @media(min-width:900px){
       .foot-copy { justify-self: center; }
     }
-    .foot-socials { display:flex; gap:clamp(0.8rem,2.2vw,1.1rem); }
-    @media(max-width:899px){
-      .foot-socials { justify-content: center; }
-    }
-    @media(min-width:900px){
-      .foot-socials { justify-self: end; }
-    }
+    .foot-socials { display:flex; gap:2rem; }
     .foot-socials a {
-      width: 2.2rem;
-      height: 2.2rem;
-      border: 1px solid rgba(247,247,247,0.16);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--muted);
-      background: rgba(247,247,247,0.02);
-      transition: color .3s, border-color .3s, background .3s, transform .3s var(--ease-out);
-      position: relative;
+      font-family: var(--ui);
+      font-size:.6rem;
+      font-weight: 600;
+      letter-spacing:.18em;
+      color:var(--muted); text-transform:uppercase; transition:color .3s;
     }
-    .foot-socials a::after {
-      content: '';
-      position: absolute; inset: 0;
-      border: 1px solid rgba(191,57,47,0.5);
-      opacity: 0;
-      transition: opacity 0.3s var(--ease-out);
-      pointer-events: none;
-    }
-    .foot-socials a:hover {
-      color: var(--primary);
-      border-color: rgba(191,57,47,0.35);
-      background: rgba(191,57,47,0.08);
-      transform: translateY(-2px);
-    }
-    .foot-socials a:hover::after { opacity: 1; }
-    .foot-socials a svg {
-      width: 16px;
-      height: 16px;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 1.7;
-    }
-
-    /* ============================================================
-       RIPPLE EFFECT
-    ============================================================ */
-    .ripple-container { position: relative; overflow: hidden; }
-    .ripple {
-      position: absolute; border-radius: 50%;
-      background: rgba(255,255,255,0.15);
-      transform: scale(0);
-      animation: ripple 0.7s linear;
-      pointer-events: none;
-    }
-
-    /* ============================================================
-       PAGE LOAD TRANSITION
-    ============================================================ */
-    .page-loader {
-      position: fixed; inset: 0; z-index: 9998;
-      background: var(--bg);
-      display: flex; align-items: center; justify-content: center;
-      transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
-    }
-    .page-loader.done { opacity: 0; pointer-events: none; }
-    .loader-inner {
-      text-align: center;
-    }
-    .loader-bar {
-      width: 120px; height: 1px;
-      background: var(--border);
-      margin: 1rem auto;
-      position: relative; overflow: hidden;
-    }
-    .loader-bar::after {
-      content: '';
-      position: absolute; top: 0; left: -100%; bottom: 0;
-      width: 100%; background: var(--primary);
-      animation: loaderProgress 0.9s var(--ease-out) forwards;
-    }
-    @keyframes loaderProgress { to { left: 0; } }
-    .loader-text {
-      font-family: var(--ui); font-size: 0.6rem; font-weight: 600;
-      letter-spacing: 0.4em; color: var(--muted); text-transform: uppercase;
-    }
-    .loader-logo {
-      font-family: var(--heading); font-size: 1.5rem;
-      letter-spacing: 0.2em; color: var(--fg);
-    }
-    .loader-logo span { color: var(--primary); }
-
-    /* ============================================================
-       PROGRESS BAR
-    ============================================================ */
-    .progress-bar {
-      position: fixed; top: 0; left: 0; z-index: 9997;
-      height: 2px;
-      background: linear-gradient(to right, var(--primary), var(--prim-l));
-      transform-origin: left;
-      transform: scaleX(0);
-      transition: transform 0.1s linear;
-    }
-
-    /* ============================================================
-       BACK TO TOP
-    ============================================================ */
-    .btt {
-      position: fixed; bottom: clamp(1.5rem,4vw,2rem); right: clamp(1rem,4vw,2rem);
-      z-index: 400;
-      width: 44px; height: 44px;
-      background: var(--primary);
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; transform: translateY(20px);
-      transition: opacity 0.4s, transform 0.4s var(--ease-out), background 0.3s;
-      pointer-events: none;
-    }
-    .btt.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
-    .btt:hover { background: var(--prim-d); }
-    .btt svg { width:16px; height:16px; stroke:var(--fg); stroke-width:2; fill:none; }
+    .foot-socials a:hover { color:var(--primary); }
   </style>
 </head>
 <body>
@@ -1206,31 +797,23 @@
   <!-- NAVBAR -->
   <nav id="nav">
     <div class="nav-inner">
-      <a href="#" class="nav-logo">
-        <img src="logo-primary.png" alt="All Too Social Logo" />
-      </a>
+      <a href="#"><img src="logo-icon.png" alt="All Too Social" style="height:2.6rem;width:auto"></a>
       <div class="nav-links">
         <a href="#about">ABOUT</a>
         <a href="#services">SERVICES</a>
         <a href="#work">PORTFOLIO</a>
       </div>
-      <a href="#contact" class="nav-cta ripple-container">CONTACT</a>
+      <a href="#contact" class="nav-cta">LET'S TALK</a>
       <button class="ham" id="ham" aria-label="Toggle menu">
         <span></span><span></span><span></span>
       </button>
     </div>
-  </nav>
-
-  <!-- MOBILE MENU -->
-  <div class="mob-menu" id="mob">
-    <a href="#about"    class="mob-menu-link ml">ABOUT</a>
-    <a href="#services" class="mob-menu-link ml">SERVICES</a>
-    <a href="#work"     class="mob-menu-link ml">PORTFOLIO</a>
-    <a href="#contact"  class="mob-cta ml">CONTACT</a>
-    <div class="mob-socials">
-      <a href="#">INSTAGRAM</a>
-      <a href="#">TIKTOK</a>
-      <a href="#">LINKEDIN</a>
+    <div class="mob-menu" id="mob">
+      <a href="#services" class="ml">SERVICES</a>
+      <a href="#work"     class="ml">WORK</a>
+      <a href="#about"    class="ml">ABOUT</a>
+      <a href="#contact"  class="ml">CONTACT</a>
+      <a href="#contact"  class="mob-cta ml">LET'S TALK</a>
     </div>
   </div>
 
@@ -1240,6 +823,7 @@
       <img src="hero-page.jpeg" alt="Content creator" />
       <div class="hero-overlay"></div>
     </div>
+    <div class="hero-accent"></div>
     <div class="hero-content container">
       <div class="hero-inner">
         <h1 class="hero-title">
@@ -1263,52 +847,10 @@
   <section id="stats">
     <div class="container">
       <div class="stats-grid">
-        <div class="reveal d1">
-          <p class="stat-num" data-target="10" data-suffix="+">0</p>
-          <p class="stat-lbl">YEARS COMBINED<br>EXPERIENCE</p>
-        </div>
-        <div class="reveal d2">
-          <p class="stat-num" data-target="50" data-suffix="+">0</p>
-          <p class="stat-lbl">BRANDS<br>SUPPORTED</p>
-        </div>
-        <div class="reveal d3">
-          <p class="stat-num" data-target="500" data-suffix="K+">0</p>
-          <p class="stat-lbl">AUDIENCE<br>REACH</p>
-        </div>
-        <div class="reveal d4">
-          <p class="stat-num" data-target="98" data-suffix="%">0</p>
-          <p class="stat-lbl">CLIENT<br>RETENTION</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ABOUT -->
-  <section id="about" class="sec">
-    <div class="container">
-      <div class="about-grid">
-        <figure class="about-media reveal-left">
-          <img src="who-we-are.jpeg" alt="All Too Social team" loading="lazy" />
-        </figure>
-        <div class="about-content reveal-right">
-          <h2 class="stitle">RUN BY CREATIVES.<br><span class="accent">BUILT ON</span> CONNECTION.</h2>
-          <div class="about-div"></div>
-          <p class="about-body">A social media studio led by creatives with 10 years of combined experience, helping growing businesses build real connection with their audience.</p>
-          <div class="mission-block">
-            <p class="mission-lbl">OUR MISSION</p>
-            <p>"To make social media feel easier for businesses, with content and strategy that actually help."</p>
-          </div>
-          <div class="team">
-            <h3 class="tname2">CHANTAY THOMAS</h3>
-            <p class="trole2">DIRECTOR</p>
-            <p class="tbio">Chantay built All Too Social to give brands a more thoughtful way to handle social media. Her background includes project management, paid social, branding, and full social management.</p>
-          </div>
-          <div class="team">
-            <h3 class="tname2">FATIMA KEITA</h3>
-            <p class="trole2">CONTENT LEAD</p>
-            <p class="tbio">Fatima leads content from concept to final edit. She focuses on work that feels polished, useful, and built for real people.</p>
-          </div>
-        </div>
+        <div class="reveal"><p class="stat-num">10+</p><p class="stat-lbl">YEARS COMBINED<br>EXPERIENCE</p></div>
+        <div class="reveal"><p class="stat-num">50+</p><p class="stat-lbl">BRANDS<br>SUPPORTED</p></div>
+        <div class="reveal"><p class="stat-num">500K+</p><p class="stat-lbl">AUDIENCE<br>REACH</p></div>
+        <div class="reveal"><p class="stat-num">98%</p><p class="stat-lbl">CLIENT<br>RETENTION</p></div>
       </div>
     </div>
   </section>
@@ -1381,52 +923,31 @@
         <span class="lbl">HOW WE WORK</span>
         <h2 class="stitle">OUR PROCESS</h2>
       </div>
-      <div class="proc-timeline">
-        <div class="proc-line" aria-hidden="true"></div>
-        <div class="proc-item reveal d1">
-          <article class="proc-card">
-            <span class="proc-stage">STAGE 1</span>
-            <h3 class="proc-title">DISCOVERY CALL</h3>
-            <p class="proc-desc">We get clear on your goals, audience, current challenges, and what success looks like for your brand.</p>
-          </article>
-          <span class="proc-node" aria-hidden="true"></span>
-          <div class="proc-spacer" aria-hidden="true"></div>
+      <div>
+        <div class="proc-step reveal">
+          <span class="proc-n">01</span><h3 class="proc-title">DISCOVERY CALL</h3>
+          <p class="proc-desc">We learn about your brand, audience, goals, and what's not working.</p>
+          <div class="proc-dot"></div>
         </div>
-        <div class="proc-item reveal d2">
-          <article class="proc-card">
-            <span class="proc-stage">STAGE 2</span>
-            <h3 class="proc-title">STRATEGY BUILD</h3>
-            <p class="proc-desc">We build a practical social roadmap with priorities, content pillars, and channel direction tailored to your business.</p>
-          </article>
-          <span class="proc-node" aria-hidden="true"></span>
-          <div class="proc-spacer" aria-hidden="true"></div>
+        <div class="proc-step reveal">
+          <span class="proc-n">02</span><h3 class="proc-title">STRATEGY BUILD</h3>
+          <p class="proc-desc">A tailored content and social media strategy rooted in audience-centred thinking.</p>
+          <div class="proc-dot"></div>
         </div>
-        <div class="proc-item reveal d3">
-          <article class="proc-card">
-            <span class="proc-stage">STAGE 3</span>
-            <h3 class="proc-title">CONTENT CREATION</h3>
-            <p class="proc-desc">Our team plans, produces, and edits platform-ready content that reflects your brand voice and drives engagement.</p>
-          </article>
-          <span class="proc-node" aria-hidden="true"></span>
-          <div class="proc-spacer" aria-hidden="true"></div>
+        <div class="proc-step reveal">
+          <span class="proc-n">03</span><h3 class="proc-title">CONTENT CREATION</h3>
+          <p class="proc-desc">Photography, video, graphics, and copy that actually speaks to your people.</p>
+          <div class="proc-dot"></div>
         </div>
-        <div class="proc-item reveal d4">
-          <article class="proc-card">
-            <span class="proc-stage">STAGE 4</span>
-            <h3 class="proc-title">LAUNCH & MANAGE</h3>
-            <p class="proc-desc">We publish, monitor, and optimise continuously, with reporting and refinements that keep performance moving forward.</p>
-          </article>
-          <span class="proc-node" aria-hidden="true"></span>
-          <div class="proc-spacer" aria-hidden="true"></div>
+        <div class="proc-step reveal">
+          <span class="proc-n">04</span><h3 class="proc-title">LAUNCH & MANAGE</h3>
+          <p class="proc-desc">Posting, community management, and performance tracking — handled.</p>
+          <div class="proc-dot"></div>
         </div>
-        <div class="proc-item reveal d5">
-          <article class="proc-card">
-            <span class="proc-stage">STAGE 5</span>
-            <h3 class="proc-title">REVIEW & REFINE</h3>
-            <p class="proc-desc">Each month we review results, identify opportunities, and sharpen both strategy and creative for the next cycle.</p>
-          </article>
-          <span class="proc-node" aria-hidden="true"></span>
-          <div class="proc-spacer" aria-hidden="true"></div>
+        <div class="proc-step reveal">
+          <span class="proc-n">05</span><h3 class="proc-title">REVIEW & REFINE</h3>
+          <p class="proc-desc">Monthly reporting and strategy refinement. We learn, adapt, and push forward.</p>
+          <div class="proc-dot"></div>
         </div>
       </div>
     </div>
@@ -1470,17 +991,48 @@
       <div class="tpanel reveal">
         <span class="tquote">"</span>
         <p class="ttext" id="tt">All Too Social completely transformed how we show up online. They understood our brand on a deeper level and created content that genuinely resonated with our audience.</p>
-        <div class="tperson">
-          <img class="timg" id="ti" src="https://i.pravatar.cc/160?img=47" alt="Sarah M." loading="lazy" />
-          <div>
-            <p class="tname" id="tn">SARAH M.</p>
-            <p class="trole" id="tr">FOUNDER, BLOOM BEAUTY</p>
+        <p class="tname" id="tn">SARAH M.</p>
+        <p class="trole" id="tr">FOUNDER, BLOOM BEAUTY</p>
+        <div class="tdots">
+          <button class="tdot act" data-i="0" aria-label="1"></button>
+          <button class="tdot"     data-i="1" aria-label="2"></button>
+          <button class="tdot"     data-i="2" aria-label="3"></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="sec">
+    <div class="container">
+      <div class="about-grid">
+        <div class="reveal">
+          <span class="lbl">WHO WE ARE</span>
+          <h2 class="stitle">RUN BY CREATIVES.<br><span class="accent">BUILT ON</span> CONNECTION.</h2>
+          <div class="about-div"></div>
+          <p class="about-body">A one-stop content hub led by creatives with a combined 10 years in the industry, helping medium-sized businesses deliver actual value to their audience by looking at social media for what it was built for — connection.</p>
+          <div class="mission-block">
+            <p class="mission-lbl">OUR MISSION</p>
+            <p>"To be the all in one content hub for businesses so they can focus on their area of expertise while we handle the social side of things."</p>
           </div>
         </div>
-        <div class="tdots">
-          <button class="tdot act" data-i="0" aria-label="Testimonial 1"></button>
-          <button class="tdot"     data-i="1" aria-label="Testimonial 2"></button>
-          <button class="tdot"     data-i="2" aria-label="Testimonial 3"></button>
+        <div class="reveal">
+          <div class="team">
+            <h3 class="tname2">CHANTAY THOMAS</h3>
+            <p class="trole2">DIRECTOR</p>
+            <p class="tbio">Chantay created All Too Social because she knew she could create more value than the cookie-cutter marketing playbook every brand seemed to be working off. Experience across project management, paid social, branding, and full social media management.</p>
+          </div>
+          <div class="team">
+            <h3 class="tname2">FATIMA KEITA</h3>
+            <p class="trole2">CONTENT LEAD</p>
+            <p class="tbio">Fatima joined All Too Social to take the lead on all things content — from concepts to creative delivery and editing. Making content that brands genuinely fall in love with is her thing.</p>
+          </div>
+          <div class="vals">
+            <div class="val">AUTHENTICITY</div>
+            <div class="val">AUDIENCE-FIRST</div>
+            <div class="val">INTENTIONAL</div>
+            <div class="val">HONEST</div>
+          </div>
         </div>
       </div>
     </div>
@@ -1566,9 +1118,7 @@
   <footer>
     <div class="container">
       <div class="foot-in">
-        <div class="foot-logo">
-          <img src="logo-primary.png" alt="All Too Social Logo" />
-        </div>
+        <div class="foot-logo"><img src="logo-icon.png" alt="All Too Social"/></div>
         <p class="foot-copy">© <span id="yr"></span> ALL TOO SOCIAL. ALL RIGHTS RESERVED.</p>
         <div class="foot-socials">
           <a href="#" aria-label="Instagram">
@@ -1658,27 +1208,14 @@
     });
 
     document.querySelectorAll('.ml').forEach(l => l.addEventListener('click', () => {
-      menuOpen = false;
-      ham.classList.remove('open');
-      mob.classList.remove('open');
-      document.body.style.overflow = '';
+      ham.classList.remove('open'); mob.classList.remove('open');
     }));
 
-    // ============================================================
-    // SCROLL REVEAL
-    // ============================================================
-    const revealObserver = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-          revealObserver.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
-
-    document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
-      revealObserver.observe(el);
-    });
+    // Scroll reveal
+    const ro = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
+    }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
 
     // ============================================================
     // STAT COUNT-UP ANIMATION
@@ -1720,9 +1257,7 @@
 
     function setT(i) {
       const el = document.getElementById('tt');
-      const img = document.getElementById('ti');
-      el.classList.add('fade');
-      img.classList.add('fade');
+      el.style.opacity = '0';
       setTimeout(() => {
         at = i;
         el.textContent = tdata[i].t;
@@ -1731,13 +1266,7 @@
         img.src = tdata[i].i;
         img.alt = tdata[i].a;
         document.querySelectorAll('.tdot').forEach((d,j) => d.classList.toggle('act', j===i));
-        el.classList.remove('fade');
-        img.classList.remove('fade');
-      }, 300);
-    }
-
-    function startInterval() {
-      tInterval = setInterval(() => setT((at+1)%3), 5000);
+      }, 250);
     }
     startInterval();
 
