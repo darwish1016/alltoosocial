@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
   <style>
-    /* ============================================================
+    /* ==============================================a==============
        BRAND TOKENS
     ============================================================ */
     :root {
@@ -450,11 +450,18 @@
     @media(min-width:768px){
       .svc-header{ flex-direction:row; align-items:flex-end; justify-content:space-between; }
     }
-    .svc-grid {
-      display: grid; grid-template-columns: 1fr;
-      gap: 0;
-    }
-    @media(min-width:640px) { .svc-grid { grid-template-columns: repeat(2,1fr); } }
+   .svc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* force 1 row */
+  gap: 0;
+}
+
+/* keep it responsive */
+@media (max-width: 900px) {
+  .svc-grid {
+    grid-template-columns: 1fr;
+  }
+}
 
     .svc-card {
       border: 1px solid var(--border); padding: clamp(1.5rem,3vw,2rem) clamp(1.5rem,3vw,2rem) clamp(1.75rem,4vw,2.25rem);
@@ -633,11 +640,18 @@
     /* ============================================================
        WORK / PORTFOLIO
     ============================================================ */
-    .work-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: clamp(0.5rem, 1.5vw, 1rem);
-    }
+   .work-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* force 1 row */
+  gap: clamp(0.8rem, 2vw, 1.2rem);
+}
+
+/* responsive */
+@media (max-width: 900px) {
+  .work-grid {
+    grid-template-columns: 1fr;
+  }
+}
     @media(min-width:768px){ .work-grid{ grid-template-columns:repeat(4,1fr); } }
     @media(max-width:400px){ .work-grid{ grid-template-columns:1fr; } }
 
